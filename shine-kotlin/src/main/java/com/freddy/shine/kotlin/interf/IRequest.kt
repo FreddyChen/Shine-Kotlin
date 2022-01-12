@@ -14,7 +14,19 @@ import kotlin.reflect.KClass
  */
 interface IRequest {
 
+    /**
+     * 异步请求
+     * @param options   请求参数
+     * @param type      数据类型映射
+     * @param parserCls 数据解析器
+     */
     suspend fun <T> request(options: RequestOptions, type: Type, parserCls: KClass<out IParser>): T
 
+    /**
+     * 同步请求
+     * @param options   请求参数
+     * @param type      数据类型映射
+     * @param parserCls 数据解析器
+     */
     fun <T> requestSync(options: RequestOptions, type: Type, parserCls: KClass<out IParser>): T
 }

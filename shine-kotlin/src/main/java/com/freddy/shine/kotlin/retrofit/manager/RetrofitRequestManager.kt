@@ -32,13 +32,18 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         }
     }
 
+    /**
+     * 异步请求
+     * @param options   请求参数
+     * @param type      数据类型映射
+     * @param parserCls 数据解析器
+     */
     override suspend fun <T> request(
         options: RequestOptions,
         type: Type,
         parserCls: KClass<out IParser>
     ): T {
         ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
-
         val function = options.function
         if (function.isNullOrEmpty()) {
             throw RequestException(
@@ -100,12 +105,86 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         }
     }
 
+    /**
+     * 同步请求
+     * @param options   请求参数
+     * @param type      数据类型映射
+     * @param parserCls 数据解析器
+     */
     override fun <T> requestSync(
         options: RequestOptions,
         type: Type,
         parserCls: KClass<out IParser>
     ): T {
-        TODO("Not yet implemented")
+        ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
+        val function = options.function
+        if (function.isNullOrEmpty()) {
+            throw RequestException(
+                type = RequestException.Type.NATIVE,
+                errMsg = "${javaClass.simpleName}#request() function is null or empty"
+            )
+        }
+        val baseUrl = options.baseUrl
+        if (baseUrl.isEmpty()) {
+            throw RequestException(
+                type = RequestException.Type.NATIVE,
+                errMsg = "${javaClass.simpleName}#request() baseUrl is null or empty"
+            )
+        }
+        return try {
+            val headers = options.headers
+            val apiService =
+                RetrofitManager.INSTANCE.getRetrofit(baseUrl, headers)
+                    .create(IApiService::class.java)
+            val params = options.params
+            val contentType = options.contentType
+            val result = when (options.requestMethod) {
+                RequestMethod.GET -> {
+                    if (params.isNullOrEmpty()) {
+                        apiService.syncGet(function)
+                    } else {
+                        apiService.syncGet(function, params)
+                    }
+                }
+                RequestMethod.POST -> {
+                    if (params.isNullOrEmpty()) {
+                        apiService.syncPost(function)
+                    } else {
+                        apiService.syncPost(
+                            function,
+                            convertParamsToRequestBody(params, contentType)
+                        )
+                    }
+                }
+                RequestMethod.PUT -> {
+                    if (params.isNullOrEmpty()) {
+                        apiService.syncPut(function)
+                    } else {
+                        apiService.syncPut(
+                            function,
+                            convertParamsToRequestBody(params, contentType)
+                        )
+                    }
+                }
+                RequestMethod.DELETE -> {
+                    if (params.isNullOrEmpty()) {
+                        apiService.syncDelete(function)
+                    } else {
+                        apiService.syncDelete(
+                            function,
+                            convertParamsToRequestBody(params, contentType)
+                        )
+                    }
+                }
+            }
+            parse(result.execute().body()!!, type, parserCls)
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            throw RequestException(type = RequestException.Type.NETWORK, errMsg = e.message ?: "")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw RequestException(type = RequestException.Type.NATIVE, errMsg = e.message ?: "")
+        }
     }
 
     private fun convertParamsToRequestBody(

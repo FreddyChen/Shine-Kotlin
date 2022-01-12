@@ -26,6 +26,9 @@ abstract class AbstractRequestManager : IRequest {
         ConcurrentHashMap()
     }
 
+    /**
+     * 解析数据
+     */
     protected fun <T> parse(
         data: String,
         type: Type,
@@ -34,6 +37,9 @@ abstract class AbstractRequestManager : IRequest {
         return getParser(parserCls).parse(data, type)
     }
 
+    /**
+     * 获取Parser
+     */
     private fun getParser(parserCls: KClass<out IParser>?): IParser {
         try {
             (parserCls ?: ShineKit.options.defaultParserCls).apply {
