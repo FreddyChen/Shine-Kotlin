@@ -1,9 +1,7 @@
 package com.freddy.shine.kotlin.retrofit.manager
 
 import android.util.ArrayMap
-import android.util.Log
 import com.freddy.shine.kotlin.AbstractRequestManager
-import com.freddy.shine.kotlin.annotation.Parser
 import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.exception.RequestException
 import com.freddy.shine.kotlin.config.RequestMethod
@@ -17,7 +15,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
-import kotlin.reflect.full.findAnnotation
 
 /**
  * 基于Retrofit实现的RequestManager

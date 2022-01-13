@@ -18,6 +18,10 @@ import java.nio.charset.Charset
  */
 class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
 
+    companion object {
+        private const val TAG = "OkHttpRequestEncryptInterceptor"
+    }
+
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         val requestMethod = request.method.uppercase()
@@ -36,11 +40,17 @@ class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
                         )?.apply {
                             val newApi = "${api}?${getParamName()}=${encrypt(url.encodedQuery)}"
                             request = request.newBuilder().url(newApi).build()
-                            ShineLog.i(log = "OkHttpRequestEncryptInterceptor#intercept() \napi = $api\nnewApi = $newApi")
+                            ShineLog.i(
+                                tag = TAG,
+                                log = "intercept() \napi = $api\nnewApi = $newApi"
+                            )
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        ShineLog.e(log = "OkHttpRequestEncryptInterceptor#intercept() encrypt failure, reason:${e.message}")
+                        ShineLog.e(
+                            tag = TAG,
+                            log = "intercept() encrypt failure, reason:${e.message}"
+                        )
                         chain.proceed(request)
                     }
                 }
@@ -78,12 +88,18 @@ class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
                                     }
                                 }
                                 request = newRequestBuilder.build()
-                                ShineLog.i(log = "OkHttpRequestEncryptInterceptor#intercept() \nrequestBody = $body\nnewRequestBody = $newRequestBody\nrequestData = $requestData\nencryptData = $encryptData")
+                                ShineLog.i(
+                                    tag = TAG,
+                                    log = "intercept() \nrequestBody = $body\nnewRequestBody = $newRequestBody\nrequestData = $requestData\nencryptData = $encryptData"
+                                )
                             }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        ShineLog.e(log = "OkHttpRequestEncryptInterceptor#intercept() encrypt failure, reason:${e.message}")
+                        ShineLog.e(
+                            tag = TAG,
+                            "log = intercept() encrypt failure, reason:${e.message}"
+                        )
                         chain.proceed(request)
                     }
                 }

@@ -103,16 +103,22 @@ class RetrofitManager private constructor() {
     }
 
     /**
-     * 获取接口加解密器，并移除
+     * 获取接口加解密器
      * @param url baseUrl+function
      */
     fun getCipher(url: String): ICipher? {
         val cipherCls = cipherClsMap[url] ?: return null
-        cipherClsMap.remove(url)
         val cipher: ICipher = cipherMap.getOrPut(cipherCls) {
             Class.forName(cipherCls.java.name).newInstance() as ICipher
         }
         ShineLog.i(log = "RetrofitManager#getCipher() \nurl = $url\ncipherCls = $cipherCls\ncipher = $cipher")
         return cipher
+    }
+
+    /**
+     * 移除接口加解密器
+     */
+    fun removeCipher(url: String) {
+        cipherClsMap.remove(url)
     }
 }

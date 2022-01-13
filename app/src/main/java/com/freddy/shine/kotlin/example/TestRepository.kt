@@ -1,7 +1,6 @@
 package com.freddy.shine.kotlin.example
 
 import android.util.ArrayMap
-import com.freddy.shine.kotlin.annotation.Parser
 import com.freddy.shine.kotlin.cipher.DefaultCipher
 import com.freddy.shine.kotlin.config.RequestMethod
 
@@ -11,10 +10,8 @@ import com.freddy.shine.kotlin.config.RequestMethod
  * @date  : 2022/01/08 23:09
  * @email : freddychencsc@gmail.com
  */
-@Parser(CustomParser1::class)
 class TestRepository : BaseRepository() {
 
-    @Parser(CustomParser1::class)
     suspend fun fetchArticleList(): ArticleList {
         val headers = ArrayMap<String, Any?>()
         headers["userId"] = 1001
@@ -32,7 +29,6 @@ class TestRepository : BaseRepository() {
         )
     }
 
-    @Parser(CustomParser2::class)
     suspend fun fetchJokeList(): ArrayList<Joke> {
         val params = ArrayMap<String, Any?>()
         params["a"] = 10011
