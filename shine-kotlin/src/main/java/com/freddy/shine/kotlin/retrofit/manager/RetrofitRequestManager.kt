@@ -4,6 +4,7 @@ import android.util.ArrayMap
 import android.util.Log
 import com.freddy.shine.kotlin.AbstractRequestManager
 import com.freddy.shine.kotlin.annotation.Parser
+import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.exception.RequestException
 import com.freddy.shine.kotlin.config.RequestMethod
 import com.freddy.shine.kotlin.config.RequestOptions
@@ -41,7 +42,8 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
     override suspend fun <T> request(
         options: RequestOptions,
         type: Type,
-        parserCls: KClass<out IParser>
+        parserCls: KClass<out IParser>,
+        cipherCls: KClass<out ICipher>?
     ): T {
         ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
         val function = options.function
@@ -60,8 +62,14 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         }
         return try {
             val headers = options.headers
+            RetrofitManager.INSTANCE.saveHeaders("${baseUrl}${function}", headers)
+
+            cipherCls?.apply {
+                RetrofitManager.INSTANCE.saveCipher("${baseUrl}${function}", this)
+            }
+
             val apiService =
-                RetrofitManager.INSTANCE.getRetrofit(baseUrl, headers)
+                RetrofitManager.INSTANCE.getRetrofit(baseUrl)
                     .create(IApiService::class.java)
             val params = options.params
             val contentType = options.contentType
@@ -91,7 +99,7 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
                     if (params.isNullOrEmpty()) {
                         apiService.delete(function)
                     } else {
-                        apiService.delete(function, convertParamsToRequestBody(params, contentType))
+                        apiService.delete(function, params)
                     }
                 }
             }
@@ -114,7 +122,8 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
     override fun <T> requestSync(
         options: RequestOptions,
         type: Type,
-        parserCls: KClass<out IParser>
+        parserCls: KClass<out IParser>,
+        cipherCls: KClass<out ICipher>?
     ): T {
         ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
         val function = options.function
@@ -133,8 +142,9 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         }
         return try {
             val headers = options.headers
+            RetrofitManager.INSTANCE.saveHeaders("${baseUrl}${function}", headers)
             val apiService =
-                RetrofitManager.INSTANCE.getRetrofit(baseUrl, headers)
+                RetrofitManager.INSTANCE.getRetrofit(baseUrl)
                     .create(IApiService::class.java)
             val params = options.params
             val contentType = options.contentType
@@ -172,7 +182,7 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
                     } else {
                         apiService.syncDelete(
                             function,
-                            convertParamsToRequestBody(params, contentType)
+                            params
                         )
                     }
                 }
@@ -187,6 +197,10 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         }
     }
 
+    /**
+     * 将请求参数转换到RequestBody
+     * POST/PUT请求适用
+     */
     private fun convertParamsToRequestBody(
         params: ArrayMap<String, Any?>?,
         contentType: String

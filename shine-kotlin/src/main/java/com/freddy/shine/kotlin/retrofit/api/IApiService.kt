@@ -53,7 +53,7 @@ internal interface IApiService {
     suspend fun delete(@Url function: String): String
 
     @DELETE
-    suspend fun delete(@Url function: String, @Body body: RequestBody): String
+    suspend fun delete(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): String
 
     @GET
     fun syncGet(@Url function: String): Call<String>
@@ -77,5 +77,5 @@ internal interface IApiService {
     fun syncDelete(@Url function: String): Call<String>
 
     @DELETE
-    fun syncDelete(@Url function: String, @Body body: RequestBody): Call<String>
+    fun syncDelete(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): Call<String>
 }

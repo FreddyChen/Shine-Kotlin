@@ -2,6 +2,7 @@ package com.freddy.shine.kotlin.example
 
 import android.util.ArrayMap
 import com.freddy.shine.kotlin.ShineKit
+import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.config.NetworkConfig
 import com.freddy.shine.kotlin.config.RequestMethod
 import com.freddy.shine.kotlin.config.RequestOptions
@@ -22,8 +23,9 @@ open class BaseRepository {
         function: String,
         headers: ArrayMap<String, Any?>? = null,
         params: ArrayMap<String, Any?>? = null,
+        contentType: String = NetworkConfig.DEFAULT_CONTENT_TYPE,
         parserCls: KClass<out IParser> = CustomParser1::class,
-        contentType: String = NetworkConfig.DEFAULT_CONTENT_TYPE
+        cipherCls: KClass<out ICipher>? = null
     ): T {
         val optionsBuilder = RequestOptions.Builder()
             .setRequestMethod(requestMethod)
@@ -40,6 +42,6 @@ open class BaseRepository {
         }
 
         return ShineKit.getRequestManager()
-            .request(optionsBuilder.build(), object : TypeToken<T>() {}.type, parserCls)
+            .request(optionsBuilder.build(), object : TypeToken<T>() {}.type, parserCls, cipherCls)
     }
 }

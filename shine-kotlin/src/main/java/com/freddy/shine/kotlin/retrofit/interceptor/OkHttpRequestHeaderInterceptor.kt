@@ -15,15 +15,15 @@ class OkHttpRequestHeaderInterceptor : OkHttpBaseInterceptor() {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        return chain.proceed(request.newBuilder().headers(getHeaders()).build())
+        val url = request.url.toString()
+        return chain.proceed(request.newBuilder().headers(getHeaders(url)).build())
     }
 
-    private fun getHeaders(): Headers {
+    private fun getHeaders(url: String): Headers {
         val headersBuilder = Headers.Builder()
-        RetrofitManager.INSTANCE.headers?.forEach {
+        RetrofitManager.INSTANCE.getHeaders(url)?.forEach {
             headersBuilder.add(it.key, it.value.toString())
         }
-
         return headersBuilder.build()
     }
 }

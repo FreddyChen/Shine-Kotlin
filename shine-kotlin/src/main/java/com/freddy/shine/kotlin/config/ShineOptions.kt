@@ -1,5 +1,7 @@
 package com.freddy.shine.kotlin.config
 
+import com.freddy.shine.kotlin.cipher.DefaultCipher
+import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.parser.DefaultParser
 import com.freddy.shine.kotlin.parser.IParser
 import kotlin.reflect.KClass

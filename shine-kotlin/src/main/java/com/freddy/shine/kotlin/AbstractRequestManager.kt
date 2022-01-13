@@ -1,6 +1,5 @@
 package com.freddy.shine.kotlin
 
-import com.freddy.shine.kotlin.config.ShineConfig
 import com.freddy.shine.kotlin.exception.RequestException
 import com.freddy.shine.kotlin.interf.IRequest
 import com.freddy.shine.kotlin.parser.IParser
@@ -13,7 +12,6 @@ import kotlin.reflect.KClass
 /**
  * RequestManager抽象类，自定义RequestManager需继承此类
  *
- * @see [RetrofitRequestManager]
  * @author: FreddyChen
  * @date  : 2022/01/07 14:05
  * @email : freddychencsc@gmail.com

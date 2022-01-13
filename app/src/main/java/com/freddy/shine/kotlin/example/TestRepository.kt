@@ -2,6 +2,7 @@ package com.freddy.shine.kotlin.example
 
 import android.util.ArrayMap
 import com.freddy.shine.kotlin.annotation.Parser
+import com.freddy.shine.kotlin.cipher.DefaultCipher
 import com.freddy.shine.kotlin.config.RequestMethod
 
 /**
@@ -18,20 +19,31 @@ class TestRepository : BaseRepository() {
         val headers = ArrayMap<String, Any?>()
         headers["userId"] = 1001
         headers["userName"] = "Fc"
+
+        val params = ArrayMap<String, Any?>()
+        params["a"] = 100
+        params["b"] = "testFetchArticleList"
         return request(
             requestMethod = RequestMethod.GET,
             function = "article/list/0/json",
-            headers = headers
+            headers = headers,
+            params = params,
+            cipherCls = DefaultCipher::class
         )
     }
 
     @Parser(CustomParser2::class)
     suspend fun fetchJokeList(): ArrayList<Joke> {
+        val params = ArrayMap<String, Any?>()
+        params["a"] = 10011
+        params["b"] = "testFetchJokeList"
         return request(
-            requestMethod = RequestMethod.GET,
+            requestMethod = RequestMethod.POST,
             baseUrl = "https://api.apiopen.top/",
             function = "getJoke",
+            params = params,
             parserCls = CustomParser2::class,
+            cipherCls = DefaultCipher::class
         )
     }
 }

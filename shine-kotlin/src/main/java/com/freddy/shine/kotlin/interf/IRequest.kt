@@ -1,5 +1,6 @@
 package com.freddy.shine.kotlin.interf
 
+import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.config.RequestOptions
 import com.freddy.shine.kotlin.parser.DefaultParser
 import com.freddy.shine.kotlin.parser.IParser
@@ -20,7 +21,7 @@ interface IRequest {
      * @param type      数据类型映射
      * @param parserCls 数据解析器
      */
-    suspend fun <T> request(options: RequestOptions, type: Type, parserCls: KClass<out IParser>): T
+    suspend fun <T> request(options: RequestOptions, type: Type, parserCls: KClass<out IParser>, cipherCls: KClass<out ICipher>? = null): T
 
     /**
      * 同步请求
@@ -28,5 +29,5 @@ interface IRequest {
      * @param type      数据类型映射
      * @param parserCls 数据解析器
      */
-    fun <T> requestSync(options: RequestOptions, type: Type, parserCls: KClass<out IParser>): T
+    fun <T> requestSync(options: RequestOptions, type: Type, parserCls: KClass<out IParser>, cipherCls: KClass<out ICipher>? = null): T
 }
