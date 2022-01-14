@@ -9,6 +9,7 @@ import kotlin.reflect.KClass
 
 /**
  * 抽象的接口请求封装，自定义RequestManager实现此接口即可
+ *
  * @author: FreddyChen
  * @date  : 2022/01/07 13:47
  * @email : freddychencsc@gmail.com

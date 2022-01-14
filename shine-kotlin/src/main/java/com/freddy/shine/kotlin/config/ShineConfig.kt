@@ -8,7 +8,6 @@ package com.freddy.shine.kotlin.config
  */
 internal object ShineConfig {
 
-    private const val DEFAULT_LOG_TAG = "Shine"
-    var LOG_ENABLE = true
-    var LOG_TAG = DEFAULT_LOG_TAG
+    const val DEFAULT_LOG_TAG = "Shine"
+    const val DEFAULT_LOG_ENABLE = true
 }

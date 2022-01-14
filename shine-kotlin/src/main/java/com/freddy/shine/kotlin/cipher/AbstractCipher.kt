@@ -9,5 +9,4 @@ package com.freddy.shine.kotlin.cipher
  * @date  : 2022/01/13 16:10
  * @email : freddychencsc@gmail.com
  */
-abstract class AbstractCipher : ICipher {
-}
+abstract class AbstractCipher : ICipher

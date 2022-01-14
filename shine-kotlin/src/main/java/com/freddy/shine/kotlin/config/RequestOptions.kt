@@ -8,13 +8,12 @@ import kotlin.reflect.KClass
 /**
  * 请求配置
  *
- * 包含
- * * requestMethod 请求方式
- * * baseUrl baseUrl
- * * function 接口地址
- * * headers 请求头
- * * params 请求参数
- * * contentType contentType
+ * * requestMethod  请求方式
+ * * baseUrl        baseUrl
+ * * function       接口地址
+ * * headers        请求头
+ * * params         请求参数
+ * * contentType    contentType
  * @author: FreddyChen
  * @date  : 2022/01/06 17:42
  * @email : freddychencsc@gmail.com
@@ -22,7 +21,7 @@ import kotlin.reflect.KClass
 class RequestOptions private constructor(builder: Builder) {
 
     val requestMethod: RequestMethod
-    val baseUrl: String
+    val baseUrl: String?
     val function: String?
     val headers: ArrayMap<String, Any?>?
     val params: ArrayMap<String, Any?>?
@@ -39,7 +38,7 @@ class RequestOptions private constructor(builder: Builder) {
 
     class Builder {
         internal var requestMethod: RequestMethod = RequestMethod.GET
-        internal var baseUrl: String = "http://www.baidu.com"
+        internal var baseUrl: String? = null
         internal var function: String? = null
         internal var headers: ArrayMap<String, Any?>? = null
         internal var params: ArrayMap<String, Any?>? = null

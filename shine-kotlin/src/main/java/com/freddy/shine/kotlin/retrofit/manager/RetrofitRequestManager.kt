@@ -42,19 +42,19 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         parserCls: KClass<out IParser>,
         cipherCls: KClass<out ICipher>?
     ): T {
-        ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
+        ShineLog.d(log = "${javaClass.simpleName}#request()\noptions = $options\ntype = $type\nparserCls = $parserCls\ncipherCls = $cipherCls")
         val function = options.function
         if (function.isNullOrEmpty()) {
             throw RequestException(
                 type = RequestException.Type.NATIVE,
-                errMsg = "${javaClass.simpleName}#request() function is null or empty"
+                errMsg = "${javaClass.simpleName}#request failure, reason: function is null or empty"
             )
         }
         val baseUrl = options.baseUrl
-        if (baseUrl.isEmpty()) {
+        if (baseUrl.isNullOrEmpty()) {
             throw RequestException(
                 type = RequestException.Type.NATIVE,
-                errMsg = "${javaClass.simpleName}#request() baseUrl is null or empty"
+                errMsg = "${javaClass.simpleName}#request failure, reason: baseUrl is null or empty"
             )
         }
         return try {
@@ -122,19 +122,19 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
         parserCls: KClass<out IParser>,
         cipherCls: KClass<out ICipher>?
     ): T {
-        ShineLog.d(log = "${javaClass.simpleName}#request() options = $options, type = $type, parserCls = $parserCls")
+        ShineLog.d(log = "${javaClass.simpleName}#request()\noptions = $options\ntype = $type\nparserCls = $parserCls\ncipherCls = $cipherCls")
         val function = options.function
         if (function.isNullOrEmpty()) {
             throw RequestException(
                 type = RequestException.Type.NATIVE,
-                errMsg = "${javaClass.simpleName}#request() function is null or empty"
+                errMsg = "${javaClass.simpleName}#request failure, reason: function is null or empty"
             )
         }
         val baseUrl = options.baseUrl
-        if (baseUrl.isEmpty()) {
+        if (baseUrl.isNullOrEmpty()) {
             throw RequestException(
                 type = RequestException.Type.NATIVE,
-                errMsg = "${javaClass.simpleName}#request() baseUrl is null or empty"
+                errMsg = "${javaClass.simpleName}#request failure, reason: baseUrl is null or empty"
             )
         }
         return try {

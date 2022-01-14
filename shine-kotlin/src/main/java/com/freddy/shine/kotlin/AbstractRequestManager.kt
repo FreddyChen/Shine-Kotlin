@@ -40,7 +40,7 @@ abstract class AbstractRequestManager : IRequest {
      */
     private fun getParser(parserCls: KClass<out IParser>?): IParser {
         try {
-            (parserCls ?: ShineKit.options.defaultParserCls).apply {
+            (parserCls ?: ShineKit.options.parserCls).apply {
                 val parser: IParser = parserMap.getOrPut(parserCls) {
                     Class.forName(java.name).newInstance() as IParser
                 }

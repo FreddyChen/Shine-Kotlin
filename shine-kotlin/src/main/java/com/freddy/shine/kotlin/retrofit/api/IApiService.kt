@@ -7,7 +7,6 @@ import retrofit2.http.*
 
 /**
  * 统一的请求方式
- * 包含
  *
  * * [get]          function: String
  * * [get]          function: String, params: ArrayMap<String, Any?>
