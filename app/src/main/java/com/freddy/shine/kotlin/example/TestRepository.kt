@@ -1,6 +1,5 @@
 package com.freddy.shine.kotlin.example
 
-import android.util.ArrayMap
 import com.freddy.shine.kotlin.cipher.DefaultCipher
 import com.freddy.shine.kotlin.config.RequestMethod
 
@@ -13,31 +12,17 @@ import com.freddy.shine.kotlin.config.RequestMethod
 class TestRepository : BaseRepository() {
 
     suspend fun fetchArticleList(): ArticleList {
-        val headers = ArrayMap<String, Any?>()
-        headers["userId"] = 1001
-        headers["userName"] = "Fc"
-
-        val params = ArrayMap<String, Any?>()
-        params["a"] = 100
-        params["b"] = "testFetchArticleList"
         return request(
             requestMethod = RequestMethod.GET,
             function = "article/list/0/json",
-            headers = headers,
-            params = params,
-            cipherCls = DefaultCipher::class
         )
     }
 
-    suspend fun fetchJokeList(): ArrayList<Joke> {
-        val params = ArrayMap<String, Any?>()
-        params["a"] = 10011
-        params["b"] = "testFetchJokeList"
+    suspend fun fetchCatList(): ArrayList<Cat> {
         return request(
-            requestMethod = RequestMethod.POST,
-            baseUrl = "https://api.apiopen.top/",
-            function = "getJoke",
-            params = params,
+            requestMethod = RequestMethod.GET,
+            baseUrl = "https://cat-fact.herokuapp.com/",
+            function = "facts/random?amount=2&animal_type=cat",
             parserCls = CustomParser2::class,
             cipherCls = DefaultCipher::class
         )

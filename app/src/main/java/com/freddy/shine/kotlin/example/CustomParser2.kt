@@ -18,22 +18,22 @@ class CustomParser2 : AbstractParser() {
         var errMsg: String?
         var responseModel: CustomResponseModel2<T>? = null
         try {
-            responseModel = gson.fromJson<CustomResponseModel2<T>>(
-                data,
-                CustomResponseModel2::class.java
-            )
-            if (!responseModel.isSuccessful()) {
-                errMsg = "responseModel is failure"
-            } else {
-                return gson.fromJson(gson.toJson(responseModel.result), type)
-            }
+//            responseModel = gson.fromJson<CustomResponseModel2<T>>(
+//                data,
+//                CustomResponseModel2::class.java
+//            )
+//            if (!responseModel.isSuccessful()) {
+//                errMsg = "responseModel is failure"
+//            } else {
+                return gson.fromJson(data, type)
+//            }
         } catch (e: Exception) {
             errMsg = e.message
         }
 
         throw RequestException(
             type = RequestException.Type.NETWORK,
-            errCode = responseModel?.code ?: -1,
+            errCode = -1,
             errMsg = "${javaClass.simpleName}#parse() failure\nerrMsg = $errMsg\ntype = $type\nresponseModel = $responseModel\ndata = $data"
         )
     }

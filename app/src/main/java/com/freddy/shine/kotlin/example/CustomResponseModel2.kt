@@ -1,6 +1,6 @@
 package com.freddy.shine.kotlin.example
 
-import com.freddy.shine.kotlin.model.AbstractResponseModel
+import com.freddy.shine.kotlin.model.IResponseModel
 
 /**
  * 自定义的ResponseModel
@@ -13,12 +13,12 @@ import com.freddy.shine.kotlin.model.AbstractResponseModel
  * @date  : 2022/01/08 23:44
  * @email : freddychencsc@gmail.com
  */
-data class CustomResponseModel2<T>(val code: Int, val message: String, val result: T) :
-    AbstractResponseModel() {
+data class CustomResponseModel2<T>(val result: T) :
+    IResponseModel {
 
-    override fun isSuccessful() = code == 200
+    override fun isSuccessful() = true
 
     override fun toString(): String {
-        return "CustomResponseModel(code=$code, message='$message', result=$result)"
+        return "CustomResponseModel2(result=$result)"
     }
 }

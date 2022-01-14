@@ -11,7 +11,7 @@ package com.freddy.shine.kotlin.model
  * @email : freddychencsc@gmail.com
  */
 internal data class DefaultResponseModel<T>(var code: Int?, var msg: String?, val data: T?) :
-    AbstractResponseModel() {
+    IResponseModel {
 
     override fun isSuccessful() = code == 0
 

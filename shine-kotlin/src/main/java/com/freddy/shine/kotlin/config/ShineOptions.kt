@@ -45,12 +45,12 @@ class ShineOptions(builder: Builder) {
             return this
         }
 
-        fun setDefaultBaseUrl(baseUrl: String): Builder {
+        fun setBaseUrl(baseUrl: String): Builder {
             this.baseUrl = baseUrl
             return this
         }
 
-        fun setDefaultParserCls(parserCls: KClass<out IParser>): Builder {
+        fun setParserCls(parserCls: KClass<out IParser>): Builder {
             this.parserCls = parserCls
             return this
         }

@@ -73,7 +73,7 @@ class OkHttpRequestDecryptInterceptor : Interceptor {
                 }
             }
         }
-        RetrofitManager.INSTANCE.removeCipher(url)
+        RetrofitManager.INSTANCE.removeCipherCls(url)
         return response
     }
 }

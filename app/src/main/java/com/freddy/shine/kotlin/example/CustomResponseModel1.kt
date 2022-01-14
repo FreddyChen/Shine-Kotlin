@@ -1,6 +1,6 @@
 package com.freddy.shine.kotlin.example
 
-import com.freddy.shine.kotlin.model.AbstractResponseModel
+import com.freddy.shine.kotlin.model.IResponseModel
 
 /**
  * 自定义的ResponseModel
@@ -14,7 +14,7 @@ import com.freddy.shine.kotlin.model.AbstractResponseModel
  * @email : freddychencsc@gmail.com
  */
 data class CustomResponseModel1<T>(val errorCode: Int, val errorMsg: String, val data: T) :
-    AbstractResponseModel() {
+    IResponseModel {
 
     override fun isSuccessful() = errorCode == 0
 

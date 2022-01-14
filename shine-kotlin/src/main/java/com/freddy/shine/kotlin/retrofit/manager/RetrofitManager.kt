@@ -1,9 +1,7 @@
 package com.freddy.shine.kotlin.retrofit.manager
 
 import android.util.ArrayMap
-import com.freddy.shine.kotlin.ShineKit
 import com.freddy.shine.kotlin.cipher.ICipher
-import com.freddy.shine.kotlin.parser.IParser
 import com.freddy.shine.kotlin.retrofit.converter.StringConverterFactory
 import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpLoggingInterceptor
 import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpRequestDecryptInterceptor
@@ -14,7 +12,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
 import kotlin.reflect.KClass
 
 /**
@@ -31,22 +28,47 @@ class RetrofitManager private constructor() {
         }
     }
 
+    /**
+     * Retrofit集合
+     * key:     baseUrl
+     * value:   Retrofit
+     */
     private val retrofitMap: ConcurrentHashMap<String, Retrofit> by lazy {
         ConcurrentHashMap()
     }
 
+    /**
+     * 加解密器Cls集合
+     * key:     url(baseUrl+function)
+     * value:   Cipher Clazz
+     */
     private val cipherClsMap: HashMap<String, KClass<out ICipher>?> by lazy {
         hashMapOf()
     }
 
+    /**
+     * 加解密器集合
+     * key:     Cipher Clazz
+     * value:   Cipher instance
+     */
     private val cipherMap: ConcurrentHashMap<KClass<out ICipher>, ICipher> by lazy {
         ConcurrentHashMap()
     }
 
+    /**
+     * 请求头集合
+     * key:     url(baseUrl+function)
+     * value:   headers
+     */
     private val headersMap: HashMap<String, ArrayMap<String, Any?>?> by lazy {
         hashMapOf()
     }
 
+    /**
+     * 获取OkHttpClient
+     *
+     * @return
+     */
     private fun getOkHttpClient(): OkHttpClient {
         val timeout = 60 * 1000L
         val builder = OkHttpClient.Builder()
@@ -79,6 +101,7 @@ class RetrofitManager private constructor() {
      * @param url baseUrl+function
      */
     fun saveHeaders(url: String, headers: ArrayMap<String, Any?>?) {
+        if (headersMap.containsKey(url)) return
         headersMap[url] = headers
     }
 
@@ -87,6 +110,7 @@ class RetrofitManager private constructor() {
      * @param url baseUrl+function
      */
     fun getHeaders(url: String): ArrayMap<String, Any?>? {
+        if (!headersMap.containsKey(url)) return null
         val headers = headersMap[url]
         headers?.apply {
             headersMap.remove(url)
@@ -99,6 +123,7 @@ class RetrofitManager private constructor() {
      * @param url baseUrl+function
      */
     fun saveCipher(url: String, cipherCls: KClass<out ICipher>?) {
+        if(cipherClsMap.containsKey(url)) return
         cipherClsMap[url] = cipherCls
     }
 
@@ -118,7 +143,8 @@ class RetrofitManager private constructor() {
     /**
      * 移除接口加解密器
      */
-    fun removeCipher(url: String) {
+    fun removeCipherCls(url: String) {
+        if (!cipherClsMap.containsKey(url)) return
         cipherClsMap.remove(url)
     }
 }

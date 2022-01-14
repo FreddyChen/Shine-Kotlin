@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         val options = ShineOptions.Builder()
             .setLogEnable(true)
             .setLogTag("FreddyChen")
-            .setDefaultBaseUrl("https://www.wanandroid.com/")
-            .setDefaultParserCls(CustomParser1::class)
+            .setBaseUrl("https://www.wanandroid.com/")
+            .setParserCls(CustomParser1::class)
             .build()
         ShineKit.init(options)
 
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
                 try {
-                    val jokeList = repository.fetchJokeList()
-                    Log.i("MainActivity", "jokeList = $jokeList")
+                    val catList = repository.fetchCatList()
+                    Log.i("MainActivity", "catList = $catList")
                 } catch (e: RequestException) {
                     e.printStackTrace()
                 }
