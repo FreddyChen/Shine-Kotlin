@@ -58,16 +58,15 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
             )
         }
         return try {
+            val apiService =
+                RetrofitManager.INSTANCE.getRetrofit(baseUrl)
+                    .create(IApiService::class.java)
             val headers = options.headers
             RetrofitManager.INSTANCE.saveHeaders("${baseUrl}${function}", headers)
 
             cipherCls?.apply {
                 RetrofitManager.INSTANCE.saveCipher("${baseUrl}${function}", this)
             }
-
-            val apiService =
-                RetrofitManager.INSTANCE.getRetrofit(baseUrl)
-                    .create(IApiService::class.java)
             val params = options.params
             val contentType = options.contentType
             val result = when (options.requestMethod) {
@@ -138,11 +137,11 @@ internal class RetrofitRequestManager private constructor() : AbstractRequestMan
             )
         }
         return try {
-            val headers = options.headers
-            RetrofitManager.INSTANCE.saveHeaders("${baseUrl}${function}", headers)
             val apiService =
                 RetrofitManager.INSTANCE.getRetrofit(baseUrl)
                     .create(IApiService::class.java)
+            val headers = options.headers
+            RetrofitManager.INSTANCE.saveHeaders("${baseUrl}${function}", headers)
             val params = options.params
             val contentType = options.contentType
             val result = when (options.requestMethod) {
