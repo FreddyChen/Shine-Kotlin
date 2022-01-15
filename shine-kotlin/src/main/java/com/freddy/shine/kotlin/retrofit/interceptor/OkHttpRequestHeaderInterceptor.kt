@@ -6,7 +6,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 /**
- * OkHttp 请求头拦截器
+ * OkHttp请求头拦截器
  * @author: FreddyChen
  * @date  : 2022/01/09 22:28
  * @email : freddychencsc@gmail.com

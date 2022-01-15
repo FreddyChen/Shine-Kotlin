@@ -13,10 +13,10 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  * @date  : 2022/01/13 15:05
  * @email : freddychencsc@gmail.com
  */
-class OkHttpRequestDecryptInterceptor : Interceptor {
+class OkHttpResponseDecryptInterceptor : OkHttpBaseInterceptor() {
 
     companion object {
-        private const val TAG = "OkHttpRequestDecryptInterceptor"
+        private const val TAG = "OkHttpResponseDecryptInterceptor"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -24,8 +24,9 @@ class OkHttpRequestDecryptInterceptor : Interceptor {
         var response = chain.proceed(request)
         val requestUrl = request.url
         val urlString = requestUrl.toString()
-        val url: String = when (request.method) {
-            RequestMethod.GET.name, RequestMethod.DELETE.name -> {
+        val requestMethod = getRequestMethod(request.method) ?: return response
+        val url: String = when (requestMethod) {
+            RequestMethod.GET, RequestMethod.DELETE -> {
                 if (requestUrl.encodedQuery.isNullOrEmpty()) {
                     urlString
                 } else {
@@ -35,7 +36,7 @@ class OkHttpRequestDecryptInterceptor : Interceptor {
                     )
                 }
             }
-            RequestMethod.POST.name, RequestMethod.PUT.name -> {
+            RequestMethod.POST, RequestMethod.PUT -> {
                 urlString
             }
             else -> {
@@ -57,19 +58,13 @@ class OkHttpRequestDecryptInterceptor : Interceptor {
                         }
                         val responseData = buffer.clone().readString(charset).trim()
                         val decryptData = decrypt(responseData)
-                        val newResponseBody = responseData.toResponseBody(contentType)
+                        val newResponseBody = decryptData?.toResponseBody(contentType)
                         response = response.newBuilder().body(newResponseBody).build()
-                        ShineLog.i(
-                            tag = TAG,
-                            log = "intercept() \nresponseBody = $body\nnewResponseBody = $newResponseBody\nresponseData = $responseData\ndecryptData = $decryptData"
-                        )
+                        ShineLog.i(log = "${TAG}#intercept() \nresponseBody = $body\nnewResponseBody = $newResponseBody\nresponseData = $responseData\ndecryptData = $decryptData")
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    ShineLog.e(
-                        tag = TAG,
-                        "log = intercept() decrypt failure, reason:${e.message}"
-                    )
+                    ShineLog.e(log = "${TAG}#intercept() decrypt failure, reason:${e.message}")
                 }
             }
         }

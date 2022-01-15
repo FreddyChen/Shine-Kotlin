@@ -11,5 +11,5 @@ import java.lang.reflect.Type
  * @email : freddychencsc@gmail.com
  */
 interface IParser {
-    fun<T> parse(data: String, type: Type): T
+    fun<T> parse(url: String, data: String, type: Type): T
 }

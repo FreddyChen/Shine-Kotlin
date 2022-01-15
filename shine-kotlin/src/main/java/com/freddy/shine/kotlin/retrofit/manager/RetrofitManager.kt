@@ -4,7 +4,7 @@ import android.util.ArrayMap
 import com.freddy.shine.kotlin.cipher.ICipher
 import com.freddy.shine.kotlin.retrofit.converter.StringConverterFactory
 import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpLoggingInterceptor
-import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpRequestDecryptInterceptor
+import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpResponseDecryptInterceptor
 import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpRequestEncryptInterceptor
 import com.freddy.shine.kotlin.retrofit.interceptor.OkHttpRequestHeaderInterceptor
 import com.freddy.shine.kotlin.utils.ShineLog
@@ -78,7 +78,7 @@ class RetrofitManager private constructor() {
             .addInterceptor(OkHttpRequestHeaderInterceptor())
             .addInterceptor(OkHttpLoggingInterceptor())
             .addInterceptor(OkHttpRequestEncryptInterceptor())
-            .addInterceptor(OkHttpRequestDecryptInterceptor())
+            .addInterceptor(OkHttpResponseDecryptInterceptor())
         return builder.build()
     }
 

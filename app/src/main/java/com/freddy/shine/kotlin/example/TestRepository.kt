@@ -11,15 +11,23 @@ import com.freddy.shine.kotlin.config.RequestMethod
  */
 class TestRepository : BaseRepository() {
 
+    /**
+     * 获取文章列表数据
+     * 异步请求
+     */
     suspend fun fetchArticleList(): ArticleList {
         return request(
-            requestMethod = RequestMethod.GET,
+            requestMethod = RequestMethod.POST,
             function = "article/list/0/json",
         )
     }
 
-    suspend fun fetchCatList(): ArrayList<Cat> {
-        return request(
+    /**
+     * 获取Cat数据
+     * 同步请求
+     */
+    fun fetchCatList(): ArrayList<Cat> {
+        return requestSync(
             requestMethod = RequestMethod.GET,
             baseUrl = "https://cat-fact.herokuapp.com/",
             function = "facts/random?amount=2&animal_type=cat",

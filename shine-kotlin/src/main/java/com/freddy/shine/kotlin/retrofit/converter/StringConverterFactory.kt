@@ -82,7 +82,10 @@ class StringConverterFactory : Converter.Factory() {
     }
 
     @Throws(IOException::class)
-    private fun readStreamAndConvert(inputStream: InputStream, outputStream: ByteArrayOutputStream): String? {
+    private fun readStreamAndConvert(
+        inputStream: InputStream,
+        outputStream: ByteArrayOutputStream
+    ): String? {
         val buffer = ByteArray(BUFFER_SIZE)
         var length: Int
         while (inputStream.read(buffer).also { length = it } != -1) {

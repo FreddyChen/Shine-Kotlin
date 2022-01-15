@@ -24,11 +24,11 @@ class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        val requestMethod = request.method.uppercase()
+        val requestMethod = getRequestMethod(request.method) ?: return chain.proceed(request)
         val url = request.url
         val urlString = url.toString()
         when (requestMethod) {
-            RequestMethod.GET.name, RequestMethod.DELETE.name -> {
+            RequestMethod.GET, RequestMethod.DELETE -> {
                 if (!url.encodedQuery.isNullOrEmpty()) {
                     try {
                         val api = "${url.scheme}://${url.host}:${url.port}${url.encodedPath}".trim()
@@ -40,23 +40,17 @@ class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
                         )?.apply {
                             val newApi = "${api}?${getParamName()}=${encrypt(url.encodedQuery)}"
                             request = request.newBuilder().url(newApi).build()
-                            ShineLog.i(
-                                tag = TAG,
-                                log = "intercept() \napi = $api\nnewApi = $newApi"
-                            )
+                            ShineLog.i(log = "${TAG}#intercept() \napi = $api\nnewApi = $newApi")
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        ShineLog.e(
-                            tag = TAG,
-                            log = "intercept() encrypt failure, reason:${e.message}"
-                        )
+                        ShineLog.e(log = "${TAG}#intercept() encrypt failure, reason:${e.message}")
                         chain.proceed(request)
                     }
                 }
             }
 
-            RequestMethod.POST.name, RequestMethod.PUT.name -> {
+            RequestMethod.POST, RequestMethod.PUT -> {
                 request.body?.let { body ->
                     var charset: Charset? = null
                     val contentType = body.contentType()
@@ -80,26 +74,20 @@ class OkHttpRequestEncryptInterceptor : OkHttpBaseInterceptor() {
                                 val newRequestBody = toRequestBody(contentType)
                                 val newRequestBuilder = request.newBuilder()
                                 when (requestMethod) {
-                                    RequestMethod.POST.name -> {
+                                    RequestMethod.POST -> {
                                         newRequestBuilder.post(newRequestBody)
                                     }
-                                    RequestMethod.PUT.name -> {
+                                    RequestMethod.PUT -> {
                                         newRequestBuilder.put(newRequestBody)
                                     }
                                 }
                                 request = newRequestBuilder.build()
-                                ShineLog.i(
-                                    tag = TAG,
-                                    log = "intercept() \nrequestBody = $body\nnewRequestBody = $newRequestBody\nrequestData = $requestData\nencryptData = $encryptData"
-                                )
+                                ShineLog.i(log = "${TAG}#intercept() \nrequestBody = $body\nnewRequestBody = $newRequestBody\nrequestData = $requestData\nencryptData = $encryptData")
                             }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        ShineLog.e(
-                            tag = TAG,
-                            "log = intercept() encrypt failure, reason:${e.message}"
-                        )
+                        ShineLog.e(log = "${TAG}#intercept() encrypt failure, reason:${e.message}")
                         chain.proceed(request)
                     }
                 }

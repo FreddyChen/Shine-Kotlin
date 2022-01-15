@@ -13,7 +13,7 @@ import java.lang.reflect.Type
  */
 class CustomParser1 : AbstractParser() {
 
-    override fun <T> parse(data: String, type: Type): T {
+    override fun <T> parse(url: String, data: String, type: Type): T {
         ShineLog.i(log = "${javaClass.simpleName}#parse() data = $data, type = $type")
         var errMsg: String?
         var responseModel: CustomResponseModel1<T>? = null
@@ -28,11 +28,13 @@ class CustomParser1 : AbstractParser() {
                 return gson.fromJson(gson.toJson(responseModel.data), type)
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             errMsg = e.message
         }
 
         throw RequestException(
-            type = RequestException.Type.NETWORK,
+            type = RequestException.Type.NATIVE,
+            url = url,
             errCode = responseModel?.errorCode ?: -1,
             errMsg = "${javaClass.simpleName}#parse() failure\nerrMsg = $errMsg\ntype = $type\nresponseModel = $responseModel\ndata = $data"
         )

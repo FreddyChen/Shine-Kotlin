@@ -8,12 +8,18 @@ import androidx.lifecycle.lifecycleScope
 import com.freddy.shine.kotlin.exception.RequestException
 import com.freddy.shine.kotlin.ShineKit
 import com.freddy.shine.kotlin.config.ShineOptions
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tv_test: View
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+    private lateinit var btn1: View
+    private lateinit var btn2: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +32,35 @@ class MainActivity : AppCompatActivity() {
             .build()
         ShineKit.init(options)
 
-        tv_test = findViewById(R.id.tv_test)
-
         val repository = TestRepository()
-        tv_test.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+
+        btn1 = findViewById(R.id.btn_1)
+        btn2 = findViewById(R.id.btn_2)
+
+        btn1.setOnClickListener {
+            thread(start = true) {
                 try {
-                    val articleList = repository.fetchArticleList()
-                    Log.i("MainActivity", "articleList = $articleList")
+                    Log.i(TAG, "异步请求开始")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val articleList = repository.fetchArticleList()
+                        Log.i(TAG, "articleList = $articleList")
+                    }
+                    Log.i(TAG, "异步请求结束")
                 } catch (e: RequestException) {
-                    e.printStackTrace()
+                    Log.e(TAG, "e = $e")
                 }
+            }
+        }
+
+        btn2.setOnClickListener {
+            thread(start = true) {
                 try {
-                    val catList = repository.fetchCatList()
-                    Log.i("MainActivity", "catList = $catList")
+                    Log.i(TAG, "同步请求开始")
+                    val articleList = repository.fetchCatList()
+                    Log.i(TAG, "articleList = $articleList")
+                    Log.i(TAG, "同步请求结束")
                 } catch (e: RequestException) {
-                    e.printStackTrace()
+                    Log.e(TAG, "e = $e")
                 }
             }
         }

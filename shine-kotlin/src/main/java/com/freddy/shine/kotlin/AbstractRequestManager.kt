@@ -28,11 +28,12 @@ abstract class AbstractRequestManager : IRequest {
      * 解析数据
      */
     protected fun <T> parse(
+        url: String,
         data: String,
         type: Type,
         parserCls: KClass<out IParser>
     ): T {
-        return getParser(parserCls).parse(data, type)
+        return getParser(parserCls).parse(url, data, type)
     }
 
     /**

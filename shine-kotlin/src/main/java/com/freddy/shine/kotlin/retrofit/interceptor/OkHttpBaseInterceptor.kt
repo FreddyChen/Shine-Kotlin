@@ -20,8 +20,9 @@ import java.nio.charset.Charset
 abstract class OkHttpBaseInterceptor : Interceptor {
 
     open fun getRequestInfo(request: Request, method: String): String? {
-        when (method) {
-            RequestMethod.GET.name -> {
+        val requestMethod = getRequestMethod(method) ?: return null
+        when (requestMethod) {
+            RequestMethod.GET, RequestMethod.DELETE -> {
                 val httpUrl = request.url
                 val paramKeys = httpUrl.queryParameterNames
                 if (paramKeys.isNullOrEmpty()) {
@@ -35,12 +36,12 @@ abstract class OkHttpBaseInterceptor : Interceptor {
                 resultBuilder.deleteAt(resultBuilder.length - 1)
                 return resultBuilder.toString()
             }
-            RequestMethod.POST.name, RequestMethod.PUT.name -> {
+            RequestMethod.POST, RequestMethod.PUT -> {
                 val requestBody = request.body ?: return null
                 try {
                     val bufferedSink = Buffer()
                     requestBody.writeTo(bufferedSink)
-                    val charset: Charset = Charset.forName("utf-8")
+                    val charset: Charset = Charsets.UTF_8
                     return bufferedSink.readString(charset)
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -56,18 +57,41 @@ abstract class OkHttpBaseInterceptor : Interceptor {
 //            return response.message
 //        }
         val responseBody = response.body
-        val contentLength = responseBody!!.contentLength()
-        val source = responseBody.source()
-        try {
-            source.request(Long.MAX_VALUE)
-        } catch (e: IOException) {
-            e.printStackTrace()
+        responseBody?.apply {
+            val contentLength = contentLength()
+            val source = responseBody.source()
+            try {
+                source.request(Long.MAX_VALUE)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            val buffer = source.buffer
+            val charset = Charset.forName(Charsets.UTF_8.name())
+            if (contentLength != 0L) {
+                str = buffer.clone().readString(charset)
+            }
+            return str
         }
-        val buffer = source.buffer
-        val charset = Charset.forName(Charsets.UTF_8.name())
-        if (contentLength != 0L) {
-            str = buffer.clone().readString(charset)
+
+        return null
+    }
+
+    protected open fun getRequestMethod(method: String): RequestMethod? {
+        var requestMethod: RequestMethod? = null
+        when (method.uppercase()) {
+            "GET" -> {
+                requestMethod = RequestMethod.GET
+            }
+            "POST" -> {
+                requestMethod = RequestMethod.POST
+            }
+            "PUT" -> {
+                requestMethod = RequestMethod.PUT
+            }
+            "DELETE" -> {
+                requestMethod = RequestMethod.DELETE
+            }
         }
-        return str
+        return requestMethod
     }
 }

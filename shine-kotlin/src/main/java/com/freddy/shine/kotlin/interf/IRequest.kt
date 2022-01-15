@@ -21,14 +21,26 @@ interface IRequest {
      * @param options   请求参数
      * @param type      数据类型映射
      * @param parserCls 数据解析器
+     * @param cipherCls 数据加解密器
      */
-    suspend fun <T> request(options: RequestOptions, type: Type, parserCls: KClass<out IParser>, cipherCls: KClass<out ICipher>? = null): T
+    suspend fun <T> request(
+        options: RequestOptions,
+        type: Type,
+        parserCls: KClass<out IParser>,
+        cipherCls: KClass<out ICipher>? = null
+    ): T
 
     /**
      * 同步请求
      * @param options   请求参数
      * @param type      数据类型映射
      * @param parserCls 数据解析器
+     * @param cipherCls 数据加解密器
      */
-    fun <T> requestSync(options: RequestOptions, type: Type, parserCls: KClass<out IParser>, cipherCls: KClass<out ICipher>? = null): T
+    fun <T> syncRequest(
+        options: RequestOptions,
+        type: Type,
+        parserCls: KClass<out IParser>,
+        cipherCls: KClass<out ICipher>? = null
+    ): T
 }
