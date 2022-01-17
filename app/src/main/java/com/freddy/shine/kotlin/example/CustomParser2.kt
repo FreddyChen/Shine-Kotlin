@@ -15,9 +15,18 @@ class CustomParser2 : AbstractParser() {
 
     override fun <T> parse(url: String, data: String, type: Type): T {
         ShineLog.i(log = "${javaClass.simpleName}#parse() data = $data, type = $type")
-        val errMsg: String?
+        var errMsg: String?
+        var responseModel: CustomResponseModel2<T>? = null
         try {
-            return gson.fromJson(data, type)
+            responseModel = gson.fromJson<CustomResponseModel2<T>>(
+                data,
+                CustomResponseModel2::class.java
+            )
+            if (!responseModel.isSuccessful()) {
+                errMsg = "responseModel is failure"
+            } else {
+                return gson.fromJson(gson.toJson(responseModel.data), type)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             errMsg = e.message
@@ -27,7 +36,7 @@ class CustomParser2 : AbstractParser() {
             type = RequestException.Type.NATIVE,
             url = url,
             errCode = -1,
-            errMsg = "${javaClass.simpleName}#parse() failure\nerrMsg = $errMsg\ntype = $type\ndata = $data"
+            errMsg = "${javaClass.simpleName}#parse() failure\nerrMsg = $errMsg\ntype = $type\nresponseModel = $responseModel\ndata = $data"
         )
     }
 }

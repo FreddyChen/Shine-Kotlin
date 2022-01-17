@@ -1,24 +1,20 @@
 package com.freddy.shine.kotlin.example
 
 import com.freddy.shine.kotlin.model.IResponseModel
+import com.google.gson.annotations.SerializedName
 
 /**
- * 自定义的ResponseModel
  *
- * 包含：
- * * code: Int
- * * message: String
- * * result: T
  * @author: FreddyChen
- * @date  : 2022/01/08 23:44
+ * @date  : 2022/01/17 16:05
  * @email : freddychencsc@gmail.com
  */
-data class CustomResponseModel2<T>(val result: T) :
-    IResponseModel {
+data class CustomResponseModel2<T>(
+    @SerializedName("message")
+    val message: String?,
+    @SerializedName("data")
+    val data: T?
+) : IResponseModel {
 
-    override fun isSuccessful() = true
-
-    override fun toString(): String {
-        return "CustomResponseModel2(result=$result)"
-    }
+    override fun isSuccessful() = this.message == "success"
 }

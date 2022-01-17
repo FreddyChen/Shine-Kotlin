@@ -1,6 +1,5 @@
 package com.freddy.shine.kotlin.example
 
-import com.freddy.shine.kotlin.cipher.DefaultCipher
 import com.freddy.shine.kotlin.config.RequestMethod
 
 /**
@@ -12,27 +11,26 @@ import com.freddy.shine.kotlin.config.RequestMethod
 class TestRepository : BaseRepository() {
 
     /**
-     * 获取文章列表数据
+     * 获取历史列表数据
      * 异步请求
      */
-    suspend fun fetchArticleList(): ArticleList {
+    suspend fun fetchHistoryList(): ArrayList<History> {
         return request(
             requestMethod = RequestMethod.POST,
-            function = "article/list/0/json",
+            function = "lishi/api.php",
         )
     }
 
     /**
-     * 获取Cat数据
+     * 获取新闻列表数据
      * 同步请求
      */
-    fun fetchCatList(): ArrayList<Cat> {
+    fun fetchJournalismList(): ArrayList<Journalism> {
         return requestSync(
             requestMethod = RequestMethod.GET,
-            baseUrl = "https://cat-fact.herokuapp.com/",
-            function = "facts/random?amount=2&animal_type=cat",
+            baseUrl = "https://is.snssdk.com/",
+            function = "api/news/feed/v51/",
             parserCls = CustomParser2::class,
-            cipherCls = DefaultCipher::class
         )
     }
 }

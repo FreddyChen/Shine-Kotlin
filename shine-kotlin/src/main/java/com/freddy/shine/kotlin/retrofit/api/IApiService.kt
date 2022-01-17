@@ -30,51 +30,115 @@ import retrofit2.http.*
  */
 internal interface IApiService {
 
+    /**
+     * 异步GET请求
+     * 无参
+     */
     @GET
     suspend fun get(@Url function: String): String
 
+    /**
+     * 异步GET请求
+     * 带参
+     */
     @GET
     suspend fun get(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): String
 
+    /**
+     * 异步POST请求
+     * 无参
+     */
     @POST
     suspend fun post(@Url function: String): String
 
+    /**
+     * 异步POST请求
+     * 带参
+     */
     @POST
     suspend fun post(@Url function: String, @Body body: RequestBody): String
 
+    /**
+     * 异步PUT请求
+     * 无参
+     */
     @PUT
     suspend fun put(@Url function: String): String
 
+    /**
+     * 异步PUT请求
+     * 带参
+     */
     @PUT
     suspend fun put(@Url function: String, @Body body: RequestBody): String
 
+    /**
+     * 异步DELETE请求
+     * 无参
+     */
     @DELETE
     suspend fun delete(@Url function: String): String
 
+    /**
+     * 异步DELETE请求
+     * 带参
+     */
     @DELETE
     suspend fun delete(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): String
 
+    /**
+     * 同步GET请求
+     * 无参
+     */
     @GET
     fun syncGet(@Url function: String): Call<String>
 
+    /**
+     * 同步GET请求
+     * 带参
+     */
     @GET
     fun syncGet(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): Call<String>
 
+    /**
+     * 同步POST请求
+     * 无参
+     */
     @POST
     fun syncPost(@Url function: String): Call<String>
 
+    /**
+     * 同步POST请求
+     * 带参
+     */
     @POST
     fun syncPost(@Url function: String, @Body body: RequestBody): Call<String>
 
+    /**
+     * 同步PUT请求
+     * 无参
+     */
     @PUT
     fun syncPut(@Url function: String): Call<String>
 
+    /**
+     * 同步PUT请求
+     * 带参
+     */
     @PUT
     fun syncPut(@Url function: String, @Body body: RequestBody): Call<String>
 
+    /**
+     * 同步DELETE请求
+     * 无参
+     */
     @DELETE
     fun syncDelete(@Url function: String): Call<String>
 
+    /**
+     * 同步DELETE请求
+     * 带参
+     */
     @DELETE
     fun syncDelete(@Url function: String, @QueryMap params: ArrayMap<String, Any?>): Call<String>
 }

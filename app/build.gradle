@@ -50,6 +50,6 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
 
     implementation project(":shine-kotlin")
-//    def shine_kotlin_version
+//    def shine_kotlin_version = '0.0.5'
 //    implementation "io.github.freddychen:shine-kotlin:$shine_kotlin_version"
 }

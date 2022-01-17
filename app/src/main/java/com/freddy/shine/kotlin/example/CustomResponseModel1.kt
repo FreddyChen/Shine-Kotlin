@@ -1,24 +1,26 @@
 package com.freddy.shine.kotlin.example
 
 import com.freddy.shine.kotlin.model.IResponseModel
+import com.google.gson.annotations.SerializedName
 
 /**
- * 自定义的ResponseModel
  *
- * 包含：
- * * errorCode: Int
- * * errorMsg: String
- * * data: T
  * @author: FreddyChen
- * @date  : 2022/01/08 23:44
+ * @date  : 2022/01/17 16:05
  * @email : freddychencsc@gmail.com
  */
-data class CustomResponseModel1<T>(val errorCode: Int, val errorMsg: String, val data: T) :
-    IResponseModel {
+data class CustomResponseModel1<T>(
+    @SerializedName("code")
+    val code: String?,
+    @SerializedName("day")
+    val day: String?,
+    @SerializedName("result")
+    val result: T?
+) : IResponseModel {
 
-    override fun isSuccessful() = errorCode == 0
+    override fun isSuccessful() = this.code == "1"
 
     override fun toString(): String {
-        return "CustomResponseModel1(errorCode=$errorCode, errorMsg='$errorMsg', data=$data)"
+        return "CustomResponseModel1(code=$code, day=$day, result=$result)"
     }
 }

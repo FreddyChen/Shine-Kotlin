@@ -16,7 +16,7 @@ package com.freddy.shine.kotlin.exception
 class RequestException(
     val type: Type = Type.NATIVE,
     val url: String? = null,
-    val statusCode: Int? = 200,
+    val statusCode: Int? = null,
     val errCode: Int? = null,
     val errMsg: String?,
     val errBody: String? = null

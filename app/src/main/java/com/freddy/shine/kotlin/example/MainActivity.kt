@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
+
     private lateinit var btn1: View
     private lateinit var btn2: View
 
@@ -39,16 +40,16 @@ class MainActivity : AppCompatActivity() {
 
         btn1.setOnClickListener {
             thread(start = true) {
-                try {
-                    Log.i(TAG, "异步请求开始")
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val articleList = repository.fetchArticleList()
-                        Log.i(TAG, "articleList = $articleList")
+                Log.i(TAG, "异步请求开始")
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        val historyList = repository.fetchHistoryList()
+                        Log.i(TAG, "historyList = $historyList")
+                    } catch (e: RequestException) {
+                        Log.e(TAG, "e = $e")
                     }
-                    Log.i(TAG, "异步请求结束")
-                } catch (e: RequestException) {
-                    Log.e(TAG, "e = $e")
                 }
+                Log.i(TAG, "异步请求结束")
             }
         }
 
@@ -56,8 +57,8 @@ class MainActivity : AppCompatActivity() {
             thread(start = true) {
                 try {
                     Log.i(TAG, "同步请求开始")
-                    val articleList = repository.fetchCatList()
-                    Log.i(TAG, "articleList = $articleList")
+                    val journalismList = repository.fetchJournalismList()
+                    Log.i(TAG, "journalismList = $journalismList")
                     Log.i(TAG, "同步请求结束")
                 } catch (e: RequestException) {
                     Log.e(TAG, "e = $e")

@@ -6,7 +6,7 @@ import com.freddy.shine.kotlin.utils.ShineLog
 import java.lang.reflect.Type
 
 /**
- * 自定义的数据解析器，用于解析 [CustomResponseModel1] 格式数据
+ * 自定义的数据解析器，用于解析 [CustomResponseModel2] 格式数据
  * @author: FreddyChen
  * @date  : 2022/01/07 14:16
  * @email : freddychencsc@gmail.com
@@ -25,7 +25,7 @@ class CustomParser1 : AbstractParser() {
             if (!responseModel.isSuccessful()) {
                 errMsg = "responseModel is failure"
             } else {
-                return gson.fromJson(gson.toJson(responseModel.data), type)
+                return gson.fromJson(gson.toJson(responseModel.result), type)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -35,7 +35,7 @@ class CustomParser1 : AbstractParser() {
         throw RequestException(
             type = RequestException.Type.NATIVE,
             url = url,
-            errCode = responseModel?.errorCode ?: -1,
+            errCode = -1,
             errMsg = "${javaClass.simpleName}#parse() failure\nerrMsg = $errMsg\ntype = $type\nresponseModel = $responseModel\ndata = $data"
         )
     }

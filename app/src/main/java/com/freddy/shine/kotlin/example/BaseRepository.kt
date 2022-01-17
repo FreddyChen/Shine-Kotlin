@@ -22,7 +22,7 @@ open class BaseRepository {
      */
     suspend inline fun <reified T> request(
         requestMethod: RequestMethod,
-        baseUrl: String = "https://www.wanandroid.com/",
+        baseUrl: String = "https://api.oick.cn/",
         function: String,
         headers: ArrayMap<String, Any?>? = null,
         params: ArrayMap<String, Any?>? = null,
