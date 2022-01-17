@@ -58,8 +58,8 @@ dependencies {
 }
 
 ext {
-    PUBLISH_GROUP_ID = "io.github.freddychen"       // 项目包名
-    PUBLISH_ARTIFACT_ID = 'shine-kotlin'			// 项目名
-    PUBLISH_VERSION = '0.0.6'					    // 版本号
+    PUBLISH_GROUP_ID = "io.github.freddychen"   // 项目包名
+    PUBLISH_ARTIFACT_ID = 'shine-kotlin'	    // 项目名
+    PUBLISH_VERSION = '0.0.7'					// 版本号
 }
 apply from: './scripts/publish-mavencentral.gradle'

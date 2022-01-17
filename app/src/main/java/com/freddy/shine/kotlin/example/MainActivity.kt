@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val options = ShineOptions.Builder()
             .setLogEnable(true)
             .setLogTag("FreddyChen")
-            .setBaseUrl("https://www.wanandroid.com/")
+            .setBaseUrl("https://api.oick.cn/")
             .setParserCls(CustomParser1::class)
             .build()
         ShineKit.init(options)
