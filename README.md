@@ -152,6 +152,7 @@ suspend fun fetchJournalismList(): ArrayList<Journalism> {
 | 版本号 | 修改时间 | 版本说明 |
 | -- | -- | -- |
 | 0.0.7 | 2022.01.16 | 首次提交 |
+| 0.0.8 | 2022.02.15 | 修改minSdkVersion为19 |
 
 ## 免费开放的Api
 提供两个免费开放Api平台给大家，方便测试：

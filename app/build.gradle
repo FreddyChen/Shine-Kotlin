@@ -14,6 +14,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -48,6 +49,9 @@ dependencies {
 
     def gson_version = '2.8.9'
     implementation "com.google.code.gson:gson:$gson_version"
+
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
 
     implementation project(":shine-kotlin")
 //    def shine_kotlin_version = '0.0.5'
